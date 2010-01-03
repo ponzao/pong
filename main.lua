@@ -23,3 +23,9 @@ end
 function love.draw()
     love.graphics.print(text, x, y)
 end
+
+function love.keypressed(k)
+    if k == "q" then
+        love.event.push("q")
+    end
+end
