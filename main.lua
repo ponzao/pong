@@ -2,20 +2,20 @@ function love.load()
     text = "hello world"
     x = 400
     y = 300
-    speed = 100
+    speed = 500
 end
 
 function love.update(dt)
     local isDown = love.keyboard.isDown
-    if isDown("right") then
+    if isDown("right") and x < 730 then
         x = x + (speed * dt)
-    elseif isDown("left") then
+    elseif isDown("left") and x > 0 then
         x = x - (speed * dt)
     end
 
-    if isDown("down") then
+    if isDown("down") and y < 600 then
         y = y + (speed * dt)
-    elseif isDown("up") then
+    elseif isDown("up") and y > 15 then
         y = y - (speed * dt)
     end
 end
