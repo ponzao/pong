@@ -32,25 +32,26 @@ function love.load()
     ball.body:applyForce(20, 5, 0, 0)
 
     speed = 250
+    paddleHeight = 100
 
     leftPaddle = {}
     leftPaddle.body = love.physics.newBody(world, 20, 300)
     leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 5, 50,
-        10, 100)
+        10, paddleHeight)
 
     rightPaddle = {}
     rightPaddle.body = love.physics.newBody(world, 770, 300)
     rightPaddle.shape = love.physics.newRectangleShape(rightPaddle.body, 5, 50,
-        10, 100)
+        10, paddleHeight)
 end
 
 local function leftPlayer(dt)
     local isDown = love.keyboard.isDown
        
-    if isDown("s") then
+    if isDown("s") and leftPaddle.body:getY() < (600 - paddleHeight) then
         leftPaddle.body:setPosition(leftPaddle.body:getX(),
             leftPaddle.body:getY() + (speed * dt))
-    elseif isDown("w") then
+    elseif isDown("w") and leftPaddle.body:getY() > 0 then
         leftPaddle.body:setPosition(leftPaddle.body:getX(), 
             leftPaddle.body:getY() - (speed * dt))
     end
@@ -58,11 +59,10 @@ end
 
 local function rightPlayer(dt)
     local isDown = love.keyboard.isDown
-       
-    if isDown("down") then
+    if isDown("down") and rightPaddle.body:getY() < (600 - paddleHeight) then
         rightPaddle.body:setPosition(rightPaddle.body:getX(),
             rightPaddle.body:getY() + (speed * dt))
-    elseif isDown("up") then
+    elseif isDown("up") and rightPaddle.body:getY() > 0 then
         rightPaddle.body:setPosition(rightPaddle.body:getX(), 
             rightPaddle.body:getY() - (speed * dt))
     end
