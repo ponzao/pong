@@ -87,10 +87,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.rectangle("line", 0, 0, 10, 600)
-    love.graphics.rectangle("line", 790, 0, 10, 600)
-    love.graphics.rectangle("line", 0, 590, 800, 10)
-    love.graphics.rectangle("line", 0, 0, 800, 10)
     love.graphics.circle("fill", ball.body:getX(), ball.body:getY(), 5, 16)
     love.graphics.rectangle("fill", leftPaddle.body:getX(), 
         leftPaddle.body:getY(), 10, 100)
