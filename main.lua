@@ -48,10 +48,13 @@ function love.update(dt)
        
     if isDown("down") then
         leftPaddle.body:setPosition(leftPaddle.x, leftPaddle.y + (speed * dt))
+        rightPaddle.body:setPosition(rightPaddle.x, rightPaddle.y + (speed * dt))
     elseif isDown("up") then
         leftPaddle.body:setPosition(leftPaddle.x, leftPaddle.y - (speed * dt))
+        rightPaddle.body:setPosition(rightPaddle.x, rightPaddle.y - (speed * dt))
     end
     leftPaddle.x, leftPaddle.y = leftPaddle.body:getPosition()
+    rightPaddle.x, rightPaddle.y = rightPaddle.body:getPosition()
 
     world:update(dt)
 end
