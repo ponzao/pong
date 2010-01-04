@@ -4,6 +4,7 @@ function love.load()
     world = love.physics.newWorld(800, 600)
     body = love.physics.newBody(world, 50, 50, 0, 0)
     ball = love.physics.newRectangleShape(body, 0, 0, 70, 15)
+    body:setMassFromShapes()
 end
 
 function love.update(dt)
