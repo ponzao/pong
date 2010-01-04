@@ -55,6 +55,8 @@ local function leftPlayer(dt)
     elseif isDown("w") then
         leftPaddle.body:applyForce(0, -500000, 0, 0)
     end
+
+    leftPaddle.body:setPosition(20, leftPaddle.body:getY())
 end
 
 local function rightPlayer(dt)
@@ -65,6 +67,8 @@ local function rightPlayer(dt)
     elseif isDown("up") then
         rightPaddle.body:applyForce(0, -500000, 0, 0)
     end
+
+    rightPaddle.body:setPosition(770, rightPaddle.body:getY())
 end
 
 function love.update(dt)
