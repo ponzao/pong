@@ -1,5 +1,6 @@
 function love.load()
     world = love.physics.newWorld(800, 600)
+    speed = 100
 
     world:setCallbacks(function(t) print("COLLISION") end)
 
@@ -30,7 +31,7 @@ function love.load()
 
     leftPaddle = {}
     leftPaddle.x, leftPaddle.y = 20, 300
-    leftPaddle.body = love.physics.newBody(world, leftPaddle.x, leftPaddle.y, 2)
+    leftPaddle.body = love.physics.newBody(world, leftPaddle.x, leftPaddle.y)
     leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 5, 50,
         10, 100)
 
@@ -44,19 +45,14 @@ end
 function love.update(dt)
     local isDown = love.keyboard.isDown
     ball.x, ball.y = ball.body:getPosition()
-    leftPaddle.x, leftPaddle.y = leftPaddle.body:getPosition()
-    
-    if isDown("left") then
-        leftPaddle.body:applyForce(-5, 0, 0, 0)
-    elseif isDown("right") then
-        leftPaddle.body:applyForce(5, 0, 0, 0)
-    end
-    
+       
     if isDown("down") then
-        leftPaddle.body:applyForce(0, 5, 0, 0)
+        leftPaddle.body:setPosition(leftPaddle.x, leftPaddle.y + (speed * dt))
     elseif isDown("up") then
-        leftPaddle.body:applyForce(0, -5, 0, 0)
+        leftPaddle.body:setPosition(leftPaddle.x, leftPaddle.y - (speed * dt))
     end
+    leftPaddle.x, leftPaddle.y = leftPaddle.body:getPosition()
+
     world:update(dt)
 end
 
