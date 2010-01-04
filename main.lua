@@ -3,6 +3,9 @@ function love.load()
     x = 400
     y = 300
     speed = 500
+    world = love.physics.newWorld(400, 300)
+    body = love.physics.newBody(world, 30, 30, 100, 0)
+    ball = love.physics.newCircleShape(body, 30, 30, 30)
 end
 
 function love.update(dt)
