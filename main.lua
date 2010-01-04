@@ -1,15 +1,19 @@
 function love.load()
     world = love.physics.newWorld(1600, 1200)
-    speed = 250
+    world:setCallbacks(function(a, b, c)
+        if a == "left" or a == "right" then print(a,b,c) end
+    end, nil, nil, nil)
 
     leftWall = {}
     leftWall.body = love.physics.newBody(world, 0, 300)
     leftWall.shape = love.physics.newRectangleShape(leftWall.body, 0, 0, 5, 600)
+    leftWall.shape:setData("left")
     
     rightWall = {}
     rightWall.body = love.physics.newBody(world, 800, 300)
     rightWall.shape = love.physics.newRectangleShape(rightWall.body, 0, 0, 5,
         600)
+    rightWall.shape:setData("right")
     
     roof = {}
     roof.body = love.physics.newBody(world, 400, 0)
@@ -22,9 +26,12 @@ function love.load()
     ball = {}
     ball.body = love.physics.newBody(world, 400, 300, 1, 0)
     ball.shape = love.physics.newCircleShape(ball.body, 0, 0, 5)
+    ball.shape:setData("ball")
     ball.shape:setRestitution(1)
     ball.shape:setFriction(0)
     ball.body:applyForce(20, 5, 0, 0)
+
+    speed = 250
 
     leftPaddle = {}
     leftPaddle.body = love.physics.newBody(world, 20, 300)
