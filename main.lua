@@ -26,10 +26,9 @@ function love.load()
     ball = {}
     ball.body = love.physics.newBody(world, 400, 300, 1, 0)
     ball.shape = love.physics.newCircleShape(ball.body, 0, 0, 5)
-    ball.shape:setData("ball")
     ball.shape:setRestitution(1)
     ball.shape:setFriction(0)
-    ball.body:applyForce(20, 5, 0, 0)
+    ball.body:applyImpulse(20, 5, 0, 0)
 
     speed = 250
 
