@@ -3,36 +3,42 @@ function love.load()
 
     world:setCallbacks(function(t) print("COLLISION") end)
 
-    leftWallBody = love.physics.newBody(world, 0, 300)
-    leftWall = love.physics.newRectangleShape(leftWallBody, 0, 0, 5, 600)
+    leftWall = {}
+    leftWall.body = love.physics.newBody(world, 0, 300)
+    leftWall.shape = love.physics.newRectangleShape(leftWall.body, 0, 0, 5, 600)
     
-    rightWallBody = love.physics.newBody(world, 800, 300)
-    rightWall = love.physics.newRectangleShape(rightWallBody, 0, 0, 5, 600)
+    rightWall = {}
+    rightWall.body = love.physics.newBody(world, 800, 300)
+    rightWall.shape = love.physics.newRectangleShape(rightWall.body, 0, 0, 5,
+        600)
     
-    roofBody = love.physics.newBody(world, 400, 0)
-    roof = love.physics.newRectangleShape(roofBody, 0, 0, 800, 5)
+    roof = {}
+    roof.body = love.physics.newBody(world, 400, 0)
+    roof.shape = love.physics.newRectangleShape(roof.body, 0, 0, 800, 5)
     
-    floorBody = love.physics.newBody(world, 400, 600)
-    floor = love.physics.newRectangleShape(floorBody, 0, 0, 800, 5)
+    floor = {}
+    floor.body = love.physics.newBody(world, 400, 600)
+    floor.shape = love.physics.newRectangleShape(floor.body, 0, 0, 800, 5)
 
-    ballX, ballY = 400, 300
-    ballBody = love.physics.newBody(world, ballX, ballY, 1, 0)
-    ball = love.physics.newCircleShape(ballBody, 0, 0, 5)
+    ball = {}
+    ball.x, ball.y = 400, 300
+    ball.body = love.physics.newBody(world, ball.x, ball.y, 1, 0)
+    ball.shape = love.physics.newCircleShape(ball.body, 0, 0, 5)
 end
 
 function love.update(dt)
     local isDown = love.keyboard.isDown
-    ballX, ballY = ballBody:getPosition()
+    ball.x, ball.y = ball.body:getPosition()
     if isDown("right") then
-        ballBody:applyForce(5, 0, 0, 0)
+        ball.body:applyForce(5, 0, 0, 0)
     elseif isDown("left") then
-        ballBody:applyForce(-5, 0, 0, 0)
+        ball.body:applyForce(-5, 0, 0, 0)
     end
 
     if isDown("down") then
-        ballBody:applyForce(0, 5, 0, 0)
+        ball.body:applyForce(0, 5, 0, 0)
     elseif isDown("up") then
-        ballBody:applyForce(0, -5, 0, 0)
+        ball.body:applyForce(0, -5, 0, 0)
     end
     world:update(dt)
 end
@@ -42,7 +48,7 @@ function love.draw()
     love.graphics.rectangle("line", 790, 0, 10, 600)
     love.graphics.rectangle("line", 0, 590, 800, 10)
     love.graphics.rectangle("line", 0, 0, 800, 10)
-    love.graphics.circle("fill", ballX, ballY, 5, 16)
+    love.graphics.circle("fill", ball.x, ball.y, 5, 16)
 end
 
 function love.keypressed(k)
