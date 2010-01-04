@@ -1,6 +1,6 @@
 function love.load()
     world = love.physics.newWorld(800, 600)
-    speed = 100
+    speed = 200
 
     world:setCallbacks(function(t) print("COLLISION") end)
 
@@ -22,39 +22,37 @@ function love.load()
     floor.shape = love.physics.newRectangleShape(floor.body, 0, 0, 800, 5)
 
     ball = {}
-    ball.x, ball.y = 400, 300
-    ball.body = love.physics.newBody(world, ball.x, ball.y, 1, 0)
+    ball.body = love.physics.newBody(world, 400, 300, 1, 0)
     ball.shape = love.physics.newCircleShape(ball.body, 0, 0, 5)
     ball.shape:setRestitution(1)
     ball.shape:setFriction(0)
     ball.body:applyForce(5, 5, 0, 0)
 
     leftPaddle = {}
-    leftPaddle.x, leftPaddle.y = 20, 300
-    leftPaddle.body = love.physics.newBody(world, leftPaddle.x, leftPaddle.y)
+    leftPaddle.body = love.physics.newBody(world, 20, 300)
     leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 5, 50,
         10, 100)
 
     rightPaddle = {}
-    rightPaddle.x, rightPaddle.y = 770, 300
-    rightPaddle.body = love.physics.newBody(world, rightPaddle.x, rightPaddle.y)
+    rightPaddle.body = love.physics.newBody(world, 770, 300)
     rightPaddle.shape = love.physics.newRectangleShape(rightPaddle.body, 5, 50,
         10, 100)
 end
 
 function love.update(dt)
     local isDown = love.keyboard.isDown
-    ball.x, ball.y = ball.body:getPosition()
        
     if isDown("down") then
-        leftPaddle.body:setPosition(leftPaddle.x, leftPaddle.y + (speed * dt))
-        rightPaddle.body:setPosition(rightPaddle.x, rightPaddle.y + (speed * dt))
+        leftPaddle.body:setPosition(leftPaddle.body:getX(),
+            leftPaddle.body:getY() + (speed * dt))
+        rightPaddle.body:setPosition(rightPaddle.body:getX(),
+            rightPaddle.body:getY() + (speed * dt))
     elseif isDown("up") then
-        leftPaddle.body:setPosition(leftPaddle.x, leftPaddle.y - (speed * dt))
-        rightPaddle.body:setPosition(rightPaddle.x, rightPaddle.y - (speed * dt))
+        leftPaddle.body:setPosition(leftPaddle.body:getX(), 
+            leftPaddle.body:getY() - (speed * dt))
+        rightPaddle.body:setPosition(rightPaddle.body:getX(), 
+            rightPaddle.body:getY() - (speed * dt))
     end
-    leftPaddle.x, leftPaddle.y = leftPaddle.body:getPosition()
-    rightPaddle.x, rightPaddle.y = rightPaddle.body:getPosition()
 
     world:update(dt)
 end
@@ -64,9 +62,11 @@ function love.draw()
     love.graphics.rectangle("line", 790, 0, 10, 600)
     love.graphics.rectangle("line", 0, 590, 800, 10)
     love.graphics.rectangle("line", 0, 0, 800, 10)
-    love.graphics.circle("fill", ball.x, ball.y, 5, 16)
-    love.graphics.rectangle("fill", leftPaddle.x, leftPaddle.y, 10, 100)
-    love.graphics.rectangle("fill", rightPaddle.x, rightPaddle.y, 10, 100)
+    love.graphics.circle("fill", ball.body:getX(), ball.body:getY(), 5, 16)
+    love.graphics.rectangle("fill", leftPaddle.body:getX(), 
+        leftPaddle.body:getY(), 10, 100)
+    love.graphics.rectangle("fill", rightPaddle.body:getX(),
+        rightPaddle.body:getY(), 10, 100)
 end
 
 function love.keypressed(k)
