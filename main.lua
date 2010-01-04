@@ -7,17 +7,17 @@ function love.load()
 
     world:setCallbacks(function(t) print("COLLISION") end)
 
-    leftWallBody = love.physics.newBody(world, 0, 300)
-    leftWall = love.physics.newRectangleShape(leftWallBody, 0, 0, 5, 600)
+    leftWallBody = love.physics.newBody(world, 50, 300)
+    leftWall = love.physics.newRectangleShape(leftWallBody, 0, 0, 5, 800)
     
-    rightWallBody = love.physics.newBody(world, 730, 300)
-    rightWall = love.physics.newRectangleShape(rightWallBody, 0, 0, 5, 600)
+    rightWallBody = love.physics.newBody(world, 850, 300)
+    rightWall = love.physics.newRectangleShape(rightWallBody, 0, 0, 5, 800)
     
-    roofBody = love.physics.newBody(world, 400, 10)
-    roof = love.physics.newRectangleShape(roofBody, 0, 0, 800, 5)
+    roofBody = love.physics.newBody(world, 400, 50)
+    roof = love.physics.newRectangleShape(roofBody, 0, 0, 1000, 5)
     
-    floorBody = love.physics.newBody(world, 400, 595)
-    floor = love.physics.newRectangleShape(floorBody, 0, 0, 800, 5)
+    floorBody = love.physics.newBody(world, 400, 650)
+    floor = love.physics.newRectangleShape(floorBody, 0, 0, 1000, 5)
 end
 
 function love.update(dt)
