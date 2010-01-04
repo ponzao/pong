@@ -81,7 +81,7 @@ function love.draw()
 end
 
 function love.keypressed(k)
-    if k == "q" then
+    if k == "q" or k == "escape" then
         love.event.push("q")
     end
 end
