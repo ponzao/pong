@@ -1,5 +1,5 @@
 function love.load()
-    world = love.physics.newWorld(800, 600)
+    world = love.physics.newWorld(1600, 1200)
     speed = 250
 
     leftWall = {}
