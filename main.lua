@@ -33,6 +33,12 @@ function love.load()
     leftPaddle.body = love.physics.newBody(world, leftPaddle.x, leftPaddle.y, 2)
     leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 5, 50,
         10, 100)
+
+    rightPaddle = {}
+    rightPaddle.x, rightPaddle.y = 770, 300
+    rightPaddle.body = love.physics.newBody(world, rightPaddle.x, rightPaddle.y, 2)
+    rightPaddle.shape = love.physics.newRectangleShape(rightPaddle.body, 5, 50,
+        10, 100)
 end
 
 function love.update(dt)
@@ -61,6 +67,7 @@ function love.draw()
     love.graphics.rectangle("line", 0, 0, 800, 10)
     love.graphics.circle("fill", ball.x, ball.y, 5, 16)
     love.graphics.rectangle("fill", leftPaddle.x, leftPaddle.y, 10, 100)
+    love.graphics.rectangle("fill", rightPaddle.x, rightPaddle.y, 10, 100)
 end
 
 function love.keypressed(k)
