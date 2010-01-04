@@ -1,4 +1,5 @@
 function love.load()
+    pixelsInAMeter = 30
     world = love.physics.newWorld(-800, -600, 1600, 1200, 0, 0)
 
     x, y = 50, 50
