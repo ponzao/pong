@@ -26,21 +26,29 @@ function love.load()
     ball.shape = love.physics.newCircleShape(ball.body, 0, 0, 5)
     ball.shape:setRestitution(1)
     ball.shape:setFriction(0)
+    ball.body:applyForce(5, 5, 0, 0)
+
+    leftPaddle = {}
+    leftPaddle.x, leftPaddle.y = 20, 300
+    leftPaddle.body = love.physics.newBody(world, leftPaddle.x, leftPaddle.y, 2)
+    leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 0, 50, 5, 100)
 end
 
 function love.update(dt)
     local isDown = love.keyboard.isDown
     ball.x, ball.y = ball.body:getPosition()
-    if isDown("right") then
-        ball.body:applyForce(5, 0, 0, 0)
-    elseif isDown("left") then
-        ball.body:applyForce(-5, 0, 0, 0)
+    leftPaddle.x, leftPaddle.y = leftPaddle.body:getPosition()
+    
+    if isDown("left") then
+        leftPaddle.body:applyForce(-5, 0, 0, 0)
+    elseif isDown("right") then
+        leftPaddle.body:applyForce(5, 0, 0, 0)
     end
-
+    
     if isDown("down") then
-        ball.body:applyForce(0, 5, 0, 0)
+        leftPaddle.body:applyForce(0, 5, 0, 0)
     elseif isDown("up") then
-        ball.body:applyForce(0, -5, 0, 0)
+        leftPaddle.body:applyForce(0, -5, 0, 0)
     end
     world:update(dt)
 end
@@ -51,6 +59,7 @@ function love.draw()
     love.graphics.rectangle("line", 0, 590, 800, 10)
     love.graphics.rectangle("line", 0, 0, 800, 10)
     love.graphics.circle("fill", ball.x, ball.y, 5, 16)
+    love.graphics.rectangle("fill", leftPaddle.x, leftPaddle.y, 10, 100)
 end
 
 function love.keypressed(k)
