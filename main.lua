@@ -62,8 +62,6 @@ local function rightPlayer(dt)
 end
 
 function love.update(dt)
-    local isDown = love.keyboard.isDown
-       
     leftPlayer(dt)
     rightPlayer(dt)
 
