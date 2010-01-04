@@ -1,7 +1,15 @@
 function love.load()
+    score = {}
+    score.left = 0
+    score.right = 0
+
     world = love.physics.newWorld(1600, 1200)
     world:setCallbacks(function(a, b, c)
-        if a == "left" or a == "right" then print(a,b,c) end
+        if a == "left" then 
+            score.left = score.left + 1
+        elseif a == "right" then
+            score.right = score.right + 1
+        end
     end, nil, nil, nil)
 
     leftWall = {}
@@ -55,8 +63,6 @@ local function leftPlayer(dt)
     elseif isDown("w") then
         leftPaddle.body:applyForce(0, -500000, 0, 0)
     end
-
-    leftPaddle.body:setPosition(20, leftPaddle.body:getY())
 end
 
 local function rightPlayer(dt)
@@ -67,8 +73,6 @@ local function rightPlayer(dt)
     elseif isDown("up") then
         rightPaddle.body:applyForce(0, -500000, 0, 0)
     end
-
-    rightPaddle.body:setPosition(770, rightPaddle.body:getY())
 end
 
 function love.update(dt)
@@ -88,6 +92,7 @@ function love.draw()
         leftPaddle.body:getY(), 10, 100)
     love.graphics.rectangle("fill", rightPaddle.body:getX(),
         rightPaddle.body:getY(), 10, 100)
+    love.graphics.print(score.left .. " - " .. score.right, 400, 300)
 end
 
 function love.keypressed(k)
