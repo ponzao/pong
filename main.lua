@@ -17,7 +17,7 @@ function love.load()
 
     ballX, ballY = 400, 300
     ballBody = love.physics.newBody(world, ballX, ballY, 1, 0)
-    ball = love.physics.newCircleShape(ballBody, 0, 0, 1)
+    ball = love.physics.newCircleShape(ballBody, 0, 0, 5)
 end
 
 function love.update(dt)
@@ -42,7 +42,7 @@ function love.draw()
     love.graphics.rectangle("line", 790, 0, 10, 600)
     love.graphics.rectangle("line", 0, 590, 800, 10)
     love.graphics.rectangle("line", 0, 0, 800, 10)
-    love.graphics.circle("fill", ballX, ballY, 1, 16)
+    love.graphics.circle("fill", ballX, ballY, 5, 16)
 end
 
 function love.keypressed(k)
