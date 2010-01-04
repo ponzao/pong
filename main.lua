@@ -10,18 +10,18 @@ end
 function love.update(dt)
     local isDown = love.keyboard.isDown
     local x, y = body:getPosition()
-    if isDown("right") and x < 730 then
-        x = x + (speed * dt)
-    elseif isDown("left") and x > 0 then
-        x = x - (speed * dt)
+    if isDown("right") then
+        body:applyForce(20, 0, 20, 20)
+    elseif isDown("left") then
+        body:applyForce(-20, 0, 20, 20)
     end
 
-    if isDown("down") and y < 600 then
-        y = y + (speed * dt)
-    elseif isDown("up") and y > 15 then
-        y = y - (speed * dt)
+    if isDown("down") then
+        body:applyForce(0, 20, 20, 20)
+    elseif isDown("up") then
+        body:applyForce(0, -20, 20, 20)
     end
-    body:setPosition(x, y)
+    world:update(dt)
 end
 
 function love.draw()
