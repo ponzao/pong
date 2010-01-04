@@ -1,6 +1,6 @@
 function love.load()
     world = love.physics.newWorld(800, 600)
-    speed = 200
+    speed = 250
 
     leftWall = {}
     leftWall.body = love.physics.newBody(world, 0, 300)
@@ -24,7 +24,7 @@ function love.load()
     ball.shape = love.physics.newCircleShape(ball.body, 0, 0, 5)
     ball.shape:setRestitution(1)
     ball.shape:setFriction(0)
-    ball.body:applyForce(5, 5, 0, 0)
+    ball.body:applyForce(20, 5, 0, 0)
 
     leftPaddle = {}
     leftPaddle.body = love.physics.newBody(world, 20, 300)
@@ -37,20 +37,35 @@ function love.load()
         10, 100)
 end
 
-function love.update(dt)
+local function leftPlayer(dt)
+    local isDown = love.keyboard.isDown
+       
+    if isDown("s") then
+        leftPaddle.body:setPosition(leftPaddle.body:getX(),
+            leftPaddle.body:getY() + (speed * dt))
+    elseif isDown("w") then
+        leftPaddle.body:setPosition(leftPaddle.body:getX(), 
+            leftPaddle.body:getY() - (speed * dt))
+    end
+end
+
+local function rightPlayer(dt)
     local isDown = love.keyboard.isDown
        
     if isDown("down") then
-        leftPaddle.body:setPosition(leftPaddle.body:getX(),
-            leftPaddle.body:getY() + (speed * dt))
         rightPaddle.body:setPosition(rightPaddle.body:getX(),
             rightPaddle.body:getY() + (speed * dt))
     elseif isDown("up") then
-        leftPaddle.body:setPosition(leftPaddle.body:getX(), 
-            leftPaddle.body:getY() - (speed * dt))
         rightPaddle.body:setPosition(rightPaddle.body:getX(), 
             rightPaddle.body:getY() - (speed * dt))
     end
+end
+
+function love.update(dt)
+    local isDown = love.keyboard.isDown
+       
+    leftPlayer(dt)
+    rightPlayer(dt)
 
     world:update(dt)
 end
