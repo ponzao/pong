@@ -31,7 +31,7 @@ function love.load()
     leftPaddle = {}
     leftPaddle.x, leftPaddle.y = 20, 300
     leftPaddle.body = love.physics.newBody(world, leftPaddle.x, leftPaddle.y, 2)
-    leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 0, 50, 5, 100)
+    leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 5, 50, 10, 100)
 end
 
 function love.update(dt)
