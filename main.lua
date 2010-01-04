@@ -47,7 +47,7 @@ function love.load()
         10, paddleHeight)
 end
 
-local function leftPlayer(dt)
+local function leftPlayer()
     local isDown = love.keyboard.isDown
        
     if isDown("s") then
@@ -59,7 +59,7 @@ local function leftPlayer(dt)
     leftPaddle.body:setPosition(20, leftPaddle.body:getY())
 end
 
-local function rightPlayer(dt)
+local function rightPlayer()
     local isDown = love.keyboard.isDown
 
     if isDown("down") then
@@ -72,8 +72,8 @@ local function rightPlayer(dt)
 end
 
 function love.update(dt)
-    leftPlayer(dt)
-    rightPlayer(dt)
+    leftPlayer()
+    rightPlayer()
 
     world:update(dt)
 end
