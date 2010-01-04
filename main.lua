@@ -41,7 +41,7 @@ function love.load()
         10, 100)
 
     rightPaddle = {}
-    rightPaddle.body = love.physics.newBody(world, 770, 300)
+    rightPaddle.body = love.physics.newBody(world, 770, 300, 10000, 0)
     rightPaddle.shape = love.physics.newRectangleShape(rightPaddle.body, 5, 50,
         10, 100)
 end
@@ -58,13 +58,11 @@ end
 
 local function rightPlayer(dt)
     local isDown = love.keyboard.isDown
-       
+
     if isDown("down") then
-        rightPaddle.body:setPosition(rightPaddle.body:getX(),
-            rightPaddle.body:getY() + (speed * dt))
+        rightPaddle.body:applyForce(0, 500000, 0, 0)
     elseif isDown("up") then
-        rightPaddle.body:setPosition(rightPaddle.body:getX(), 
-            rightPaddle.body:getY() - (speed * dt))
+        rightPaddle.body:applyForce(0, -500000, 0, 0)
     end
 end
 
