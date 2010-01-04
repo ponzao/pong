@@ -2,8 +2,6 @@ function love.load()
     world = love.physics.newWorld(800, 600)
     speed = 200
 
-    world:setCallbacks(function(t) print("COLLISION") end)
-
     leftWall = {}
     leftWall.body = love.physics.newBody(world, 0, 300)
     leftWall.shape = love.physics.newRectangleShape(leftWall.body, 0, 0, 5, 600)
