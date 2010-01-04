@@ -1,15 +1,14 @@
 function love.load()
     text = "hello world"
-    x = 400
-    y = 300
     speed = 500
-    world = love.physics.newWorld(400, 300)
-    body = love.physics.newBody(world, 30, 30, 100, 0)
-    ball = love.physics.newCircleShape(body, 30, 30, 30)
+    world = love.physics.newWorld(800, 600)
+    body = love.physics.newBody(world, 50, 50, 0, 0)
+    ball = love.physics.newRectangleShape(body, 0, 0, 70, 15)
 end
 
 function love.update(dt)
     local isDown = love.keyboard.isDown
+    local x, y = body:getPosition()
     if isDown("right") and x < 730 then
         x = x + (speed * dt)
     elseif isDown("left") and x > 0 then
@@ -21,9 +20,11 @@ function love.update(dt)
     elseif isDown("up") and y > 15 then
         y = y - (speed * dt)
     end
+    body:setPosition(x, y)
 end
 
 function love.draw()
+    local x, y = body:getPosition()
     love.graphics.print(text, x, y)
 end
 
