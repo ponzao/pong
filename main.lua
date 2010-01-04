@@ -6,9 +6,9 @@ function love.load()
     world = love.physics.newWorld(1600, 1200)
     world:setCallbacks(function(a, b, c)
         if a == "left" then 
-            score.left = score.left + 1
-        elseif a == "right" then
             score.right = score.right + 1
+        elseif a == "right" then
+            score.left = score.left + 1
         end
     end, nil, nil, nil)
 
@@ -55,7 +55,7 @@ function love.load()
         10, paddleHeight)
 end
 
-local function leftPlayer()
+local function leftPlayer(dt)
     local isDown = love.keyboard.isDown
        
     if isDown("s") then
@@ -65,7 +65,7 @@ local function leftPlayer()
     end
 end
 
-local function rightPlayer()
+local function rightPlayer(dt)
     local isDown = love.keyboard.isDown
 
     if isDown("down") then
@@ -76,8 +76,8 @@ local function rightPlayer()
 end
 
 function love.update(dt)
-    leftPlayer()
-    rightPlayer()
+    leftPlayer(dt)
+    rightPlayer(dt)
 
     world:update(dt)
 end
