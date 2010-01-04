@@ -24,6 +24,7 @@ function love.load()
     ball.x, ball.y = 400, 300
     ball.body = love.physics.newBody(world, ball.x, ball.y, 1, 0)
     ball.shape = love.physics.newCircleShape(ball.body, 0, 0, 5)
+    ball.shape:setRestitution(1)
 end
 
 function love.update(dt)
