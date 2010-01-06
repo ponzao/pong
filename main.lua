@@ -4,7 +4,7 @@ function love.load()
     score.right = 0
 
     world = love.physics.newWorld(1600, 1200)
-    world:setCallbacks(function(a, b, c)
+    world:setCallbacks(function(a)
         if a == "left" then 
             score.right = score.right + 1
         elseif a == "right" then
@@ -41,42 +41,44 @@ function love.load()
     ball.shape:setRestitution(1)
     ball.body:applyImpulse(20, 5, 0, 0)
 
-    speed = 250
     paddleHeight = 100
+    paddleForce = 100000
 
     leftPaddle = {}
-    leftPaddle.body = love.physics.newBody(world, 20, 300, 10000, 0)
+    leftPaddle.body = love.physics.newBody(world, leftPaddle.x, 300, 10000, 0)
     leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 5, 50,
         10, paddleHeight)
+    leftPaddle.x = 20
 
     rightPaddle = {}
-    rightPaddle.body = love.physics.newBody(world, 770, 300, 10000, 0)
+    rightPaddle.body = love.physics.newBody(world, rightPaddle.x, 300, 10000, 0)
     rightPaddle.shape = love.physics.newRectangleShape(rightPaddle.body, 5, 50,
         10, paddleHeight)
+    rightPaddle.x = 770
 end
 
 local function leftPlayer()
     local isDown = love.keyboard.isDown
        
     if isDown("s") then
-        leftPaddle.body:applyForce(0, 500000, 0, 0)
+        leftPaddle.body:applyForce(0, paddleForce, 0, 0)
     elseif isDown("w") then
-        leftPaddle.body:applyForce(0, -500000, 0, 0)
+        leftPaddle.body:applyForce(0, -paddleForce, 0, 0)
     end
 
-    leftPaddle.body:setPosition(20, leftPaddle.body:getY())
+    leftPaddle.body:setPosition(leftPaddle.x, leftPaddle.body:getY())
 end
 
 local function rightPlayer()
     local isDown = love.keyboard.isDown
 
     if isDown("down") then
-        rightPaddle.body:applyForce(0, 500000, 0, 0)
+        rightPaddle.body:applyForce(0, paddleForce, 0, 0)
     elseif isDown("up") then
-        rightPaddle.body:applyForce(0, -500000, 0, 0)
+        rightPaddle.body:applyForce(0, -paddleForce, 0, 0)
     end
 
-    rightPaddle.body:setPosition(770, rightPaddle.body:getY())
+    rightPaddle.body:setPosition(rightPaddle.x, rightPaddle.body:getY())
 end
 
 function love.update(dt)
