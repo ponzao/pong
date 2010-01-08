@@ -1,5 +1,6 @@
---[[function love.conf(t)
-    t.screen.width = 1024
-    t.screen.height = 768
-end]]
-
+function love.conf(t)
+    t.modules.joystick = false
+    t.screen.width = 800
+    t.screen.height = 600
+    t.title = "Pong"
+end

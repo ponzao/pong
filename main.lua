@@ -1,16 +1,13 @@
 function love.load()
+    begun = false
+    altHit = false
+
     score = {}
     score.left = 0
     score.right = 0
 
-    world = love.physics.newWorld(1600, 1200)
-    world:setCallbacks(function(a)
-        if a == "left" then 
-            score.right = score.right + 1
-        elseif a == "right" then
-            score.left = score.left + 1
-        end
-    end, nil, nil, nil)
+    world = love.physics.newWorld(800, 600)
+    world:setCallbacks(collision, nil, nil, nil)
 
     leftWall = {}
     leftWall.body = love.physics.newBody(world, 0, 300)
@@ -36,25 +33,29 @@ function love.load()
     floor.shape:setFriction(0)
 
     ball = {}
+    ball.radius = 5
     ball.body = love.physics.newBody(world, 400, 300, 1, 0)
-    ball.shape = love.physics.newCircleShape(ball.body, 0, 0, 5)
+    ball.shape = love.physics.newCircleShape(ball.body, 0, 0, ball.radius)
     ball.shape:setRestitution(1)
-    ball.body:applyImpulse(20, 5, 0, 0)
+    ball.image = love.graphics.newImage("images/ball.png")
 
     paddleHeight = 100
+    paddleWidth = 10
     paddleForce = 100000
 
     leftPaddle = {}
     leftPaddle.body = love.physics.newBody(world, leftPaddle.x, 300, 10000, 0)
     leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 5, 50,
-        10, paddleHeight)
+        paddleWidth, paddleHeight)
     leftPaddle.x = 20
+    leftPaddle.image = love.graphics.newImage("images/leftPaddle.png")
 
     rightPaddle = {}
     rightPaddle.body = love.physics.newBody(world, rightPaddle.x, 300, 10000, 0)
     rightPaddle.shape = love.physics.newRectangleShape(rightPaddle.body, 5, 50,
-        10, paddleHeight)
+        paddleWidth, paddleHeight)
     rightPaddle.x = 770
+    rightPaddle.image = love.graphics.newImage("images/rightPaddle.png")
 end
 
 local function leftPlayer()
@@ -81,6 +82,14 @@ local function rightPlayer()
     rightPaddle.body:setPosition(rightPaddle.x, rightPaddle.body:getY())
 end
 
+function collision(a)
+    if a == "left" then
+        score.right = score.right + 1
+    elseif a == "right" then
+        score.left = score.left + 1
+    end
+end
+    
 function love.update(dt)
     leftPlayer()
     rightPlayer()
@@ -89,16 +98,32 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.circle("fill", ball.body:getX(), ball.body:getY(), 5, 16)
-    love.graphics.rectangle("fill", leftPaddle.body:getX(), 
-        leftPaddle.body:getY(), 10, 100)
-    love.graphics.rectangle("fill", rightPaddle.body:getX(),
-        rightPaddle.body:getY(), 10, 100)
+    love.graphics.draw(ball.image, ball.body:getX(), ball.body:getY())
+    love.graphics.draw(leftPaddle.image, leftPaddle.body:getX(), 
+        leftPaddle.body:getY())
+    love.graphics.draw(rightPaddle.image, rightPaddle.body:getX(),
+        rightPaddle.body:getY())
     love.graphics.print(score.left .. " - " .. score.right, 400, 300)
 end
 
 function love.keypressed(k)
-    if k == "q" or k == "escape" then
+    if k == " " and begun == false then
+        ball.body:applyImpulse(20, 5, 0, 0)
+    end
+    
+    if k == "lalt" then
+        altHit = true
+    end
+
+    if k == "q" or k == "escape" or (altHit and k == "f4") then
         love.event.push("q")
     end
 end
+
+function love.keyreleased(k)
+    if k == "lalt" then
+        altHit = false
+    end
+
+end
+
