@@ -34,7 +34,7 @@ function love.load()
     ball.shape:setRestitution(1)
     ball.image = love.graphics.newImage("images/ball.png")
 
-    paddle = { height = 100, width = 10, force = 100000, center = 250 }
+    paddle = { height = 100, width = 10, force = 250000, center = 250 }
 
     leftPaddle = {}
     leftPaddle.body = love.physics.newBody(world, leftPaddle.x, paddle.center, 10000, 0)
