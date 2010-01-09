@@ -14,12 +14,14 @@ local function createHorizontalWall(world, x, y)
     return wall
 end
 
-local function createPaddle(world, x, paddleConstants, imagePath)
+local function createPaddle(world, x, paddleConstants, imagePath, keys, side)
     local paddle = {}
+    paddle.keys = keys
+    paddle.side = side
     paddle.body = love.physics.newBody(world, x, paddleConstants.center,
         10000, 0)
     paddle.shape = love.physics.newRectangleShape(paddle.body, 5, 50,
-    paddleConstants.width, paddleConstants.height)
+        paddleConstants.width, paddleConstants.height)
     paddle.x = x
     paddle.image = love.graphics.newImage(imagePath)
     return paddle
@@ -68,8 +70,10 @@ function love.load()
 
     paddle = { height = 100, width = 10, force = 250000, center = 250 }
 
-    leftPaddle = createPaddle(world, 20, paddle, "images/leftPaddle.png")
-    rightPaddle = createPaddle(world, 770, paddle, "images/rightPaddle.png")
+    leftPaddle = createPaddle(world, 20, paddle, "images/leftPaddle.png",
+        { up = "w", down = "s" }, "left")
+    rightPaddle = createPaddle(world, 770, paddle, "images/rightPaddle.png",
+        { up = "up", down = "down" }, "right")
 
     starter = "left"
     math.randomseed(os.time())
@@ -80,41 +84,24 @@ function love.load()
     end
 end
 
-local function leftPlayer()
+local function move(playerPaddle)
     local isDown = love.keyboard.isDown
        
-    if isDown("s") then
-        leftPaddle.body:applyForce(0, paddle.force, 0, 0)
-    elseif isDown("w") then
-        leftPaddle.body:applyForce(0, -paddle.force, 0, 0)
+    if isDown(playerPaddle.keys.down) then
+        playerPaddle.body:applyForce(0, paddle.force, 0, 0)
+    elseif isDown(playerPaddle.keys.up) then
+        playerPaddle.body:applyForce(0, -paddle.force, 0, 0)
     end
 
-    leftPaddle.body:setPosition(leftPaddle.x, leftPaddle.body:getY())
-    if playing == false and starter == "left" then
-        ball.body:setY(leftPaddle.body:getY() + 45)
-    end
-end
-
-local function rightPlayer()
-    local isDown = love.keyboard.isDown
-
-    if isDown("down") then
-        rightPaddle.body:applyForce(0, paddle.force, 0, 0)
-    elseif isDown("up") then
-        rightPaddle.body:applyForce(0, -paddle.force, 0, 0)
-    end
-
-    rightPaddle.body:setPosition(rightPaddle.x, rightPaddle.body:getY())
-    if playing == false and starter == "right" then
-        ball.body:setY(rightPaddle.body:getY() + 45)
+    playerPaddle.body:setPosition(playerPaddle.x, playerPaddle.body:getY())
+    if playing == false and starter == playerPaddle.side then
+        ball.body:setY(playerPaddle.body:getY() + 45)
     end
 end
 
-
-    
 function love.update(dt)
-    leftPlayer()
-    rightPlayer()
+    move(leftPaddle)
+    move(rightPaddle)
 
     world:update(dt)
 end
