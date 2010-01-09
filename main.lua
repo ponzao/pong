@@ -1,8 +1,16 @@
-local function createWall(world, bodyX, bodyY, data)
+local function createVerticalWall(world, x, y, data)
     local wall = {}
-    wall.body = love.physics.newBody(world, bodyX, bodyY)
+    wall.body = love.physics.newBody(world, x, y)
     wall.shape = love.physics.newRectangleShape(wall.body, 0, 0, 5, 600)
     wall.shape:setData(data)
+    return wall
+end
+
+local function createHorizontalWall(world, x, y)
+    local wall = {}
+    wall.body = love.physics.newBody(world, x, y)
+    wall.shape = love.physics.newRectangleShape(wall.body, 0, 0, 800, 5)
+    wall.shape:setFriction(0)
     return wall
 end
 
@@ -17,6 +25,15 @@ local function reset(side)
     starter = side
 end
 
+local function collision(a)
+    if a == "left" then
+        score.right = score.right + 1
+        reset("left")
+    elseif a == "right" then
+        score.left = score.left + 1
+        reset("right")
+    end
+end
 
 function love.load()
     playing = false
@@ -26,19 +43,10 @@ function love.load()
     world = love.physics.newWorld(1600, 1200)
     world:setCallbacks(collision, nil, nil, nil)
 
-    leftWall = createWall(world, 0, 300, "left")
-    
-    rightWall = createWall(world, 800, 300, "right")
-    
-    roof = {}
-    roof.body = love.physics.newBody(world, 400, 0)
-    roof.shape = love.physics.newRectangleShape(roof.body, 0, 0, 800, 5)
-    roof.shape:setFriction(0)
-    
-    floor = {}
-    floor.body = love.physics.newBody(world, 400, 600)
-    floor.shape = love.physics.newRectangleShape(floor.body, 0, 0, 800, 5)
-    floor.shape:setFriction(0)
+    leftWall = createVerticalWall(world, 0, 300, "left")
+    rightWall = createVerticalWall(world, 800, 300, "right")
+    roof = createHorizontalWall(world, 400, 0)
+    floor = createHorizontalWall(world, 400, 600)
 
     ball = {}
     ball.radius = 5
@@ -104,15 +112,6 @@ local function rightPlayer()
     end
 end
 
-local function collision(a)
-    if a == "left" then
-        score.right = score.right + 1
-        reset("left")
-    elseif a == "right" then
-        score.left = score.left + 1
-        reset("right")
-    end
-end
 
     
 function love.update(dt)
