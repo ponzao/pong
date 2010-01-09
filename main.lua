@@ -110,13 +110,9 @@ function reset(side)
     playing = false
     ball.body:setLinearVelocity(0, 0)
     if side == "left" then
-        ball.body:setPosition(35, 295)
-        leftPaddle.body:setLinearVelocity(0, 0)
-        leftPaddle.body:setPosition(leftPaddle.x, paddleCenter)
+        ball.body:setPosition(35, leftPaddle.body:getY() + 45)
     else
-        ball.body:setPosition(755, 295)
-        rightPaddle.body:setLinearVelocity(0, 0)
-        rightPaddle.body:setPosition(rightPaddle.x, paddleCenter)
+        ball.body:setPosition(755, rightPaddle.body:getY() + 45)
     end
     starter = side
 end
