@@ -14,6 +14,17 @@ local function createHorizontalWall(world, x, y)
     return wall
 end
 
+local function createPaddle(world, x, paddleConstants, imagePath)
+    local paddle = {}
+    paddle.body = love.physics.newBody(world, x, paddleConstants.center,
+        10000, 0)
+    paddle.shape = love.physics.newRectangleShape(paddle.body, 5, 50,
+    paddleConstants.width, paddleConstants.height)
+    paddle.x = x
+    paddle.image = love.graphics.newImage(imagePath)
+    return paddle
+end
+
 local function reset(side)
     playing = false
     ball.body:setLinearVelocity(0, 0)
@@ -57,21 +68,8 @@ function love.load()
 
     paddle = { height = 100, width = 10, force = 250000, center = 250 }
 
-    leftPaddle = {}
-    leftPaddle.body = love.physics.newBody(world, leftPaddle.x, paddle.center,
-        10000, 0)
-    leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 5, 50,
-        paddle.width, paddle.height)
-    leftPaddle.x = 20
-    leftPaddle.image = love.graphics.newImage("images/leftPaddle.png")
-
-    rightPaddle = {}
-    rightPaddle.body = love.physics.newBody(world, rightPaddle.x, paddle.center,
-        10000, 0)
-    rightPaddle.shape = love.physics.newRectangleShape(rightPaddle.body, 5, 50,
-        paddle.width, paddle.height)
-    rightPaddle.x = 770
-    rightPaddle.image = love.graphics.newImage("images/rightPaddle.png")
+    leftPaddle = createPaddle(world, 20, paddle, "images/leftPaddle.png")
+    rightPaddle = createPaddle(world, 770, paddle, "images/rightPaddle.png")
 
     starter = "left"
     math.randomseed(os.time())
