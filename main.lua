@@ -50,9 +50,9 @@ function love.load()
     rightPaddle.x = 770
     rightPaddle.image = love.graphics.newImage("images/rightPaddle.png")
 
-    -- pseudo-random decision of the starter
     starter = "left"
-    if (os.time() % 2 == 1) then
+    math.randomseed(os.time())
+    if (math.random(1, 2) == 1) then
         reset("left")
     else
         reset("right")
