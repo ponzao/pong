@@ -1,3 +1,23 @@
+local function createWall(world, bodyX, bodyY, data)
+    local wall = {}
+    wall.body = love.physics.newBody(world, bodyX, bodyY)
+    wall.shape = love.physics.newRectangleShape(wall.body, 0, 0, 5, 600)
+    wall.shape:setData(data)
+    return wall
+end
+
+local function reset(side)
+    playing = false
+    ball.body:setLinearVelocity(0, 0)
+    if side == "left" then
+        ball.body:setPosition(35, leftPaddle.body:getY() + 45)
+    else
+        ball.body:setPosition(755, rightPaddle.body:getY() + 45)
+    end
+    starter = side
+end
+
+
 function love.load()
     playing = false
     altPressed = false
@@ -6,16 +26,9 @@ function love.load()
     world = love.physics.newWorld(1600, 1200)
     world:setCallbacks(collision, nil, nil, nil)
 
-    leftWall = {}
-    leftWall.body = love.physics.newBody(world, 0, 300)
-    leftWall.shape = love.physics.newRectangleShape(leftWall.body, 0, 0, 5, 600)
-    leftWall.shape:setData("left")
+    leftWall = createWall(world, 0, 300, "left")
     
-    rightWall = {}
-    rightWall.body = love.physics.newBody(world, 800, 300)
-    rightWall.shape = love.physics.newRectangleShape(rightWall.body, 0, 0, 5,
-        600)
-    rightWall.shape:setData("right")
+    rightWall = createWall(world, 800, 300, "right")
     
     roof = {}
     roof.body = love.physics.newBody(world, 400, 0)
@@ -101,16 +114,6 @@ local function collision(a)
     end
 end
 
-local function reset(side)
-    playing = false
-    ball.body:setLinearVelocity(0, 0)
-    if side == "left" then
-        ball.body:setPosition(35, leftPaddle.body:getY() + 45)
-    else
-        ball.body:setPosition(755, rightPaddle.body:getY() + 45)
-    end
-    starter = side
-end
     
 function love.update(dt)
     leftPlayer()
