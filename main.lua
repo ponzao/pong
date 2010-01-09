@@ -56,7 +56,7 @@ function love.load()
     world = love.physics.newWorld(1600, 1200)
     world:setCallbacks(collision, nil, nil, nil)
 
-    leftWall = createVerticalWall(world, 0, 300, "left")
+    leftWall = createVerticalWall(world, -5, 300, "left")
     rightWall = createVerticalWall(world, 800, 300, "right")
     roof = createHorizontalWall(world, 400, 0)
     floor = createHorizontalWall(world, 400, 600)
