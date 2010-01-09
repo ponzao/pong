@@ -1,7 +1,6 @@
 function love.load()
-    begun = false
-    altHit = false
-
+    playing = false
+    altPressed = false
     score = {}
     score.left = 0
     score.right = 0
@@ -34,7 +33,7 @@ function love.load()
 
     ball = {}
     ball.radius = 5
-    ball.body = love.physics.newBody(world, 400, 300, 1, 0)
+    ball.body = love.physics.newBody(world, 0, 300, 1, 0)
     ball.shape = love.physics.newCircleShape(ball.body, 0, 0, ball.radius)
     ball.shape:setRestitution(1)
     ball.image = love.graphics.newImage("images/ball.png")
@@ -42,20 +41,29 @@ function love.load()
     paddleHeight = 100
     paddleWidth = 10
     paddleForce = 100000
+    paddleCenter = 250
 
     leftPaddle = {}
-    leftPaddle.body = love.physics.newBody(world, leftPaddle.x, 300, 10000, 0)
+    leftPaddle.body = love.physics.newBody(world, leftPaddle.x, paddleCenter, 10000, 0)
     leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 5, 50,
         paddleWidth, paddleHeight)
     leftPaddle.x = 20
     leftPaddle.image = love.graphics.newImage("images/leftPaddle.png")
 
     rightPaddle = {}
-    rightPaddle.body = love.physics.newBody(world, rightPaddle.x, 300, 10000, 0)
+    rightPaddle.body = love.physics.newBody(world, rightPaddle.x, paddleCenter, 10000, 0)
     rightPaddle.shape = love.physics.newRectangleShape(rightPaddle.body, 5, 50,
         paddleWidth, paddleHeight)
     rightPaddle.x = 770
     rightPaddle.image = love.graphics.newImage("images/rightPaddle.png")
+
+    -- pseudo-random decision of the starter
+    starter = "left"
+    if (os.time() % 2 == 1) then
+        reset("left")
+    else
+        reset("right")
+    end
 end
 
 local function leftPlayer()
@@ -68,6 +76,9 @@ local function leftPlayer()
     end
 
     leftPaddle.body:setPosition(leftPaddle.x, leftPaddle.body:getY())
+    if playing == false and starter == "left" then
+        ball.body:setY(leftPaddle.body:getY() + 45)
+    end
 end
 
 local function rightPlayer()
@@ -80,14 +91,34 @@ local function rightPlayer()
     end
 
     rightPaddle.body:setPosition(rightPaddle.x, rightPaddle.body:getY())
+    if playing == false and starter == "right" then
+        ball.body:setY(rightPaddle.body:getY() + 45)
+    end
 end
 
 function collision(a)
     if a == "left" then
         score.right = score.right + 1
+        reset("left")
     elseif a == "right" then
         score.left = score.left + 1
+        reset("right")
     end
+end
+
+function reset(side)
+    playing = false
+    ball.body:setLinearVelocity(0, 0)
+    if side == "left" then
+        ball.body:setPosition(35, 295)
+        leftPaddle.body:setLinearVelocity(0, 0)
+        leftPaddle.body:setPosition(leftPaddle.x, paddleCenter)
+    else
+        ball.body:setPosition(755, 295)
+        rightPaddle.body:setLinearVelocity(0, 0)
+        rightPaddle.body:setPosition(rightPaddle.x, paddleCenter)
+    end
+    starter = side
 end
     
 function love.update(dt)
@@ -107,12 +138,17 @@ function love.draw()
 end
 
 function love.keypressed(k)
-    if k == " " and begun == false then
-        ball.body:applyImpulse(20, 5, 0, 0)
+    if k == " " and playing == false then
+        playing = true
+        if starter == "left" then
+            ball.body:applyImpulse(-20, 0, 0, 0)
+        else
+            ball.body:applyImpulse(20, 0, 0, 0)
+        end
     end
     
     if k == "lalt" then
-        altHit = true
+        altPressed = true
     end
 
     if k == "q" or k == "escape" or (altHit and k == "f4") then
@@ -122,8 +158,6 @@ end
 
 function love.keyreleased(k)
     if k == "lalt" then
-        altHit = false
+        altPressed = false
     end
-
 end
-
