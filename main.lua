@@ -1,25 +1,21 @@
 function love.load()
     playing = false
     altPressed = false
-    score = {}
-    score.left = 0
-    score.right = 0
+    score = { left = 0, right = 0 }
 
-    world = love.physics.newWorld(800, 600)
+    world = love.physics.newWorld(1600, 1200)
     world:setCallbacks(collision, nil, nil, nil)
 
     leftWall = {}
     leftWall.body = love.physics.newBody(world, 0, 300)
     leftWall.shape = love.physics.newRectangleShape(leftWall.body, 0, 0, 5, 600)
     leftWall.shape:setData("left")
-    leftWall.shape:setFriction(0)
     
     rightWall = {}
     rightWall.body = love.physics.newBody(world, 800, 300)
     rightWall.shape = love.physics.newRectangleShape(rightWall.body, 0, 0, 5,
         600)
     rightWall.shape:setData("right")
-    rightWall.shape:setFriction(0)
     
     roof = {}
     roof.body = love.physics.newBody(world, 400, 0)
@@ -38,22 +34,19 @@ function love.load()
     ball.shape:setRestitution(1)
     ball.image = love.graphics.newImage("images/ball.png")
 
-    paddleHeight = 100
-    paddleWidth = 10
-    paddleForce = 100000
-    paddleCenter = 250
+    paddle = { height = 100, width = 10, force = 100000, center = 250 }
 
     leftPaddle = {}
-    leftPaddle.body = love.physics.newBody(world, leftPaddle.x, paddleCenter, 10000, 0)
+    leftPaddle.body = love.physics.newBody(world, leftPaddle.x, paddle.center, 10000, 0)
     leftPaddle.shape = love.physics.newRectangleShape(leftPaddle.body, 5, 50,
-        paddleWidth, paddleHeight)
+        paddle.width, paddle.height)
     leftPaddle.x = 20
     leftPaddle.image = love.graphics.newImage("images/leftPaddle.png")
 
     rightPaddle = {}
-    rightPaddle.body = love.physics.newBody(world, rightPaddle.x, paddleCenter, 10000, 0)
+    rightPaddle.body = love.physics.newBody(world, rightPaddle.x, paddle.center, 10000, 0)
     rightPaddle.shape = love.physics.newRectangleShape(rightPaddle.body, 5, 50,
-        paddleWidth, paddleHeight)
+        paddle.width, paddle.height)
     rightPaddle.x = 770
     rightPaddle.image = love.graphics.newImage("images/rightPaddle.png")
 
@@ -70,9 +63,9 @@ local function leftPlayer()
     local isDown = love.keyboard.isDown
        
     if isDown("s") then
-        leftPaddle.body:applyForce(0, paddleForce, 0, 0)
+        leftPaddle.body:applyForce(0, paddle.force, 0, 0)
     elseif isDown("w") then
-        leftPaddle.body:applyForce(0, -paddleForce, 0, 0)
+        leftPaddle.body:applyForce(0, -paddle.force, 0, 0)
     end
 
     leftPaddle.body:setPosition(leftPaddle.x, leftPaddle.body:getY())
@@ -85,9 +78,9 @@ local function rightPlayer()
     local isDown = love.keyboard.isDown
 
     if isDown("down") then
-        rightPaddle.body:applyForce(0, paddleForce, 0, 0)
+        rightPaddle.body:applyForce(0, paddle.force, 0, 0)
     elseif isDown("up") then
-        rightPaddle.body:applyForce(0, -paddleForce, 0, 0)
+        rightPaddle.body:applyForce(0, -paddle.force, 0, 0)
     end
 
     rightPaddle.body:setPosition(rightPaddle.x, rightPaddle.body:getY())
