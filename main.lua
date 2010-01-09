@@ -151,7 +151,7 @@ function love.keypressed(k)
         altPressed = true
     end
 
-    if k == "q" or k == "escape" or (altHit and k == "f4") then
+    if k == "q" or k == "escape" or (altPressed and k == "f4") then
         love.event.push("q")
     end
 end
