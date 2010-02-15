@@ -20,10 +20,12 @@ local function createPaddle(world, x, paddleConstants, imagePath, keys, side)
     paddle.side = side
     paddle.body = love.physics.newBody(world, x, paddleConstants.center,
         10000, 0)
-    paddle.shape = love.physics.newRectangleShape(paddle.body, 5, 50,
+    paddle.shape = love.physics.newRectangleShape(paddle.body, 4, 49,
         paddleConstants.width, paddleConstants.height)
     paddle.x = x
     paddle.image = love.graphics.newImage(imagePath)
+    paddle.imageXDiff = math.floor(paddle.image:getWidth() / 2) - 4
+    paddle.imageYDiff = math.floor(paddle.image:getHeight() / 2) - 49
     return paddle
 end
 
@@ -53,7 +55,7 @@ function love.load()
     altPressed = false
     score = { left = 0, right = 0 }
 
-    world = love.physics.newWorld(1600, 1200)
+    world = love.physics.newWorld(800, 600)
     world:setCallbacks(collision, nil, nil, nil)
 
     leftWall = createVerticalWall(world, -5, 300, "left")
@@ -62,17 +64,19 @@ function love.load()
     floor = createHorizontalWall(world, 400, 600)
 
     ball = {}
-    ball.radius = 5
+    ball.radius = 4
     ball.body = love.physics.newBody(world, 0, 300, 1, 0)
     ball.shape = love.physics.newCircleShape(ball.body, 0, 0, ball.radius)
     ball.shape:setRestitution(1)
     ball.image = love.graphics.newImage("images/ball.png")
+    ball.imageXDiff = math.floor(ball.image:getWidth() / 2) - ball.radius
+    ball.imageYDiff = math.floor(ball.image:getHeight() / 2) - ball.radius
 
     paddle = { height = 100, width = 10, force = 250000, center = 250 }
 
-    leftPaddle = createPaddle(world, 20, paddle, "images/leftPaddle.png",
+    leftPaddle = createPaddle(world, 20, paddle, "images/paddle.png",
         { up = "w", down = "s" }, "left")
-    rightPaddle = createPaddle(world, 770, paddle, "images/rightPaddle.png",
+    rightPaddle = createPaddle(world, 770, paddle, "images/paddle.png",
         { up = "up", down = "down" }, "right")
 
     starter = "left"
@@ -107,12 +111,23 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.draw(ball.image, ball.body:getX(), ball.body:getY())
-    love.graphics.draw(leftPaddle.image, leftPaddle.body:getX(), 
-        leftPaddle.body:getY())
-    love.graphics.draw(rightPaddle.image, rightPaddle.body:getX(),
-        rightPaddle.body:getY())
+    love.graphics.draw(ball.image, ball.body:getX() - ball.imageXDiff, 
+        ball.body:getY() - ball.imageYDiff)
+    love.graphics.draw(leftPaddle.image, leftPaddle.body:getX() 
+        - leftPaddle.imageXDiff, leftPaddle.body:getY()
+        - leftPaddle.imageYDiff)
+    love.graphics.draw(rightPaddle.image, rightPaddle.body:getX()
+        - rightPaddle.imageXDiff, rightPaddle.body:getY() 
+        - rightPaddle.imageYDiff)
     love.graphics.print(score.left .. " - " .. score.right, 400, 300)
+
+    love.graphics.setColor(0, 0, 0)
+    for i=600,0,-1 do 
+        if math.random(0, 1) == 1 then
+            love.graphics.rectangle("fill", 0, i, 800, 1)
+        end
+    end
+    love.graphics.setColor(255, 255, 255, 255)
 end
 
 function love.keypressed(k)
