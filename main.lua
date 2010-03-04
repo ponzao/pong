@@ -1,3 +1,17 @@
+local Object = {}
+Object.__index = O
+
+function Object:new(t)
+    return setmetatable(t or {}, self)
+end
+
+local Wall = {}
+Wall.__index = Wall
+
+function Wall:new(t)
+    return Object:new(t)
+end
+
 local function createVerticalWall(world, x, y, data)
     local wall = {}
     wall.body = love.physics.newBody(world, x, y)
