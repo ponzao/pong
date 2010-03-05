@@ -1,15 +1,8 @@
-local Object = {}
-Object.__index = O
-
-function Object:new(t)
-    return setmetatable(t or {}, self)
-end
-
 local Wall = {}
 Wall.__index = Wall
 
 function Wall:new(t)
-    return Object:new(t)
+    return setmetatable(t or {}, self)
 end
 
 local function createVerticalWall(world, x, y, data)
