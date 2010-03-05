@@ -58,7 +58,7 @@ local function move(playerPaddle)
         playerPaddle:moveUp()
     end
 
-    playerPaddle.body:setPosition(playerPaddle.x, playerPaddle.body:getY())
+    playerPaddle:holdPosition() -- XXX ?
     if playing == false and starter == playerPaddle.side then
         ball.body:setY(playerPaddle.body:getY() + 45)
     end

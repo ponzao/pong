@@ -70,3 +70,7 @@ end
 function Paddle:moveUp()
     self.body:applyForce(0, -Paddle.constants.FORCE, 0, 0)
 end
+
+function Paddle:holdPosition() -- XXX ?
+    self.body:setPosition(self.x, self.body:getY())
+end
