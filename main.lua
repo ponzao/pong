@@ -18,19 +18,20 @@ function HorizontalWall:new(world, x, y)
     return setmetatable({ body = body, shape = shape }, self)
 end
 
-local function createPaddle(world, x, paddleConstants, imagePath, keys, side)
-    local paddle = {}
-    paddle.keys = keys
-    paddle.side = side
-    paddle.body = love.physics.newBody(world, x, paddleConstants.center,
+local Paddle = {}
+Paddle.__index = Paddle
+
+function Paddle:new(world, x, paddleConstants, imagePath, keys, side)
+    local body = love.physics.newBody(world, x, paddleConstants.center,
         10000, 0)
-    paddle.shape = love.physics.newRectangleShape(paddle.body, 4, 49,
+    local shape = love.physics.newRectangleShape(body, 4, 49,
         paddleConstants.width, paddleConstants.height)
-    paddle.x = x
-    paddle.image = love.graphics.newImage(imagePath)
-    paddle.imageXDiff = math.floor(paddle.image:getWidth() / 2) - 4
-    paddle.imageYDiff = math.floor(paddle.image:getHeight() / 2) - 49
-    return paddle
+    local image = love.graphics.newImage(imagePath)
+    local imageXDiff = math.floor(image:getWidth() / 2) - 4
+    local imageYDiff = math.floor(image:getHeight() / 2) - 49
+    return setmetatable({ keys = keys, side = side, body = body,
+        shape = shape, x = x, image = image, imageXDiff = imageXDiff,
+        imageYDiff = imageYDiff }, self)
 end
 
 local function reset(side)
@@ -78,9 +79,9 @@ function love.load()
 
     paddle = { height = 100, width = 10, force = 250000, center = 250 }
 
-    leftPaddle = createPaddle(world, 20, paddle, "images/paddle.png",
+    leftPaddle = Paddle:new(world, 20, paddle, "images/paddle.png",
         { up = "w", down = "s" }, "left")
-    rightPaddle = createPaddle(world, 770, paddle, "images/paddle.png",
+    rightPaddle = Paddle:new(world, 770, paddle, "images/paddle.png",
         { up = "up", down = "down" }, "right")
 
     starter = "left"
