@@ -95,9 +95,9 @@ function love.keypressed(k)
     if k == " " and playing == false then
         playing = true
         if starter == "left" then
-            ball.body:applyImpulse(-20, 0, 0, 0)
+            ball:moveRight()
         else
-            ball.body:applyImpulse(20, 0, 0, 0)
+            ball:moveLeft()
         end
     end
     

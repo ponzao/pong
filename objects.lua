@@ -18,6 +18,14 @@ function Ball:new(world)
         imageXDiff = imageXDiff, imageYDiff = imageYDiff }, self)
 end
 
+function Ball:moveRight()
+    self.body:applyImpulse(-20, 0, 0, 0)
+end
+
+function Ball:moveLeft()
+    self.body:applyImpulse(20, 0, 0, 0)
+end
+
 VerticalWall = {}
 VerticalWall.__index = VerticalWall
 
