@@ -1,24 +1,21 @@
-local Wall = {}
-Wall.__index = Wall
+local VerticalWall = {}
+VerticalWall.__index = VerticalWall
 
-function Wall:new(t)
-    return setmetatable(t or {}, self)
+function VerticalWall:new(world, x, y, data)
+    local body  = love.physics.newBody(world, x, y)
+    local shape = love.physics.newRectangleShape(body, 0, 0, 5, 600)
+    shape:setData(data)
+    return setmetatable({ body = body, shape = shape }, self)
 end
 
-local function createVerticalWall(world, x, y, data)
-    local wall = {}
-    wall.body = love.physics.newBody(world, x, y)
-    wall.shape = love.physics.newRectangleShape(wall.body, 0, 0, 5, 600)
-    wall.shape:setData(data)
-    return wall
-end
+local HorizontalWall = {}
+HorizontalWall.__index = HorizontalWall
 
-local function createHorizontalWall(world, x, y)
-    local wall = {}
-    wall.body = love.physics.newBody(world, x, y)
-    wall.shape = love.physics.newRectangleShape(wall.body, 0, 0, 800, 5)
-    wall.shape:setFriction(0)
-    return wall
+function HorizontalWall:new(world, x, y)
+    local body = love.physics.newBody(world, x, y)
+    local shape = love.physics.newRectangleShape(body, 0, 0, 800, 5)
+    shape:setFriction(0)
+    return setmetatable({ body = body, shape = shape }, self)
 end
 
 local function createPaddle(world, x, paddleConstants, imagePath, keys, side)
@@ -65,10 +62,10 @@ function love.load()
     world = love.physics.newWorld(800, 600)
     world:setCallbacks(collision, nil, nil, nil)
 
-    leftWall = createVerticalWall(world, -5, 300, "left")
-    rightWall = createVerticalWall(world, 800, 300, "right")
-    roof = createHorizontalWall(world, 400, 0)
-    floor = createHorizontalWall(world, 400, 600)
+    leftWall = VerticalWall:new(world, -5, 300, "left")
+    rightWall = VerticalWall:new(world, 800, 300, "right")
+    roof = HorizontalWall:new(world, 400, 0)
+    floor = HorizontalWall:new(world, 400, 600)
 
     ball = {}
     ball.radius = 4
