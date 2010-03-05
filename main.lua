@@ -83,7 +83,7 @@ function love.draw()
     love.graphics.print(score.left .. " - " .. score.right, 400, 300)
 
     love.graphics.setColor(0, 0, 0)
-    for i=600,0,-1 do 
+    for i = 600, 0, -1 do 
         if math.random(0, 1) == 1 then
             love.graphics.rectangle("fill", 0, i, 800, 1)
         end
