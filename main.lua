@@ -53,9 +53,9 @@ local function move(playerPaddle)
     local isDown = love.keyboard.isDown
        
     if isDown(playerPaddle.keys.down) then
-        playerPaddle.body:applyForce(0, objects.Paddle.constants.FORCE, 0, 0)
+        playerPaddle:moveDown()
     elseif isDown(playerPaddle.keys.up) then
-        playerPaddle.body:applyForce(0, -objects.Paddle.constants.FORCE, 0, 0)
+        playerPaddle:moveUp()
     end
 
     playerPaddle.body:setPosition(playerPaddle.x, playerPaddle.body:getY())

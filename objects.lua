@@ -62,3 +62,11 @@ function Paddle:new(world, x, imagePath, keys, side)
         shape = shape, x = x, image = image, imageXDiff = imageXDiff,
         imageYDiff = imageYDiff }, self)
 end
+
+function Paddle:moveDown()
+    self.body:applyForce(0, Paddle.constants.FORCE, 0, 0)
+end
+
+function Paddle:moveUp()
+    self.body:applyForce(0, -Paddle.constants.FORCE, 0, 0)
+end
