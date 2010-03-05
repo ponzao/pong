@@ -20,12 +20,13 @@ end
 
 local Paddle = {}
 Paddle.__index = Paddle
+Paddle.constants = { HEIGHT = 100, WIDTH = 10, FORCE = 250000, CENTER = 250 }
 
-function Paddle:new(world, x, paddleConstants, imagePath, keys, side)
-    local body = love.physics.newBody(world, x, paddleConstants.center,
+function Paddle:new(world, x, imagePath, keys, side)
+    local body = love.physics.newBody(world, x, self.constants.CENTER,
         10000, 0)
     local shape = love.physics.newRectangleShape(body, 4, 49,
-        paddleConstants.width, paddleConstants.height)
+        self.constants.WIDTH, self.constants.HEIGHT)
     local image = love.graphics.newImage(imagePath)
     local imageXDiff = math.floor(image:getWidth() / 2) - 4
     local imageYDiff = math.floor(image:getHeight() / 2) - 49
@@ -77,11 +78,10 @@ function love.load()
     ball.imageXDiff = math.floor(ball.image:getWidth() / 2) - ball.radius
     ball.imageYDiff = math.floor(ball.image:getHeight() / 2) - ball.radius
 
-    paddle = { height = 100, width = 10, force = 250000, center = 250 }
 
-    leftPaddle = Paddle:new(world, 20, paddle, "images/paddle.png",
+    leftPaddle = Paddle:new(world, 20, "images/paddle.png",
         { up = "w", down = "s" }, "left")
-    rightPaddle = Paddle:new(world, 770, paddle, "images/paddle.png",
+    rightPaddle = Paddle:new(world, 770, "images/paddle.png",
         { up = "up", down = "down" }, "right")
 
     starter = "left"
@@ -97,9 +97,9 @@ local function move(playerPaddle)
     local isDown = love.keyboard.isDown
        
     if isDown(playerPaddle.keys.down) then
-        playerPaddle.body:applyForce(0, paddle.force, 0, 0)
+        playerPaddle.body:applyForce(0, Paddle.constants.FORCE, 0, 0)
     elseif isDown(playerPaddle.keys.up) then
-        playerPaddle.body:applyForce(0, -paddle.force, 0, 0)
+        playerPaddle.body:applyForce(0, -Paddle.constants.FORCE, 0, 0)
     end
 
     playerPaddle.body:setPosition(playerPaddle.x, playerPaddle.body:getY())
