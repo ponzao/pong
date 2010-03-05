@@ -1,39 +1,4 @@
-local VerticalWall = {}
-VerticalWall.__index = VerticalWall
-
-function VerticalWall:new(world, x, y, data)
-    local body  = love.physics.newBody(world, x, y)
-    local shape = love.physics.newRectangleShape(body, 0, 0, 5, 600)
-    shape:setData(data)
-    return setmetatable({ body = body, shape = shape }, self)
-end
-
-local HorizontalWall = {}
-HorizontalWall.__index = HorizontalWall
-
-function HorizontalWall:new(world, x, y)
-    local body = love.physics.newBody(world, x, y)
-    local shape = love.physics.newRectangleShape(body, 0, 0, 800, 5)
-    shape:setFriction(0)
-    return setmetatable({ body = body, shape = shape }, self)
-end
-
-local Paddle = {}
-Paddle.__index = Paddle
-Paddle.constants = { HEIGHT = 100, WIDTH = 10, FORCE = 250000, CENTER = 250 }
-
-function Paddle:new(world, x, imagePath, keys, side)
-    local body = love.physics.newBody(world, x, self.constants.CENTER,
-        10000, 0)
-    local shape = love.physics.newRectangleShape(body, 4, 49,
-        self.constants.WIDTH, self.constants.HEIGHT)
-    local image = love.graphics.newImage(imagePath)
-    local imageXDiff = math.floor(image:getWidth() / 2) - 4
-    local imageYDiff = math.floor(image:getHeight() / 2) - 49
-    return setmetatable({ keys = keys, side = side, body = body,
-        shape = shape, x = x, image = image, imageXDiff = imageXDiff,
-        imageYDiff = imageYDiff }, self)
-end
+require("objects")
 
 local function reset(side)
     playing = false
@@ -64,24 +29,15 @@ function love.load()
     world = love.physics.newWorld(800, 600)
     world:setCallbacks(collision, nil, nil, nil)
 
-    leftWall = VerticalWall:new(world, -5, 300, "left")
-    rightWall = VerticalWall:new(world, 800, 300, "right")
-    roof = HorizontalWall:new(world, 400, 0)
-    floor = HorizontalWall:new(world, 400, 600)
+    leftWall = objects.VerticalWall:new(world, -5, 300, "left")
+    rightWall = objects.VerticalWall:new(world, 800, 300, "right")
+    roof = objects.HorizontalWall:new(world, 400, 0)
+    floor = objects.HorizontalWall:new(world, 400, 600)
 
-    ball = {}
-    ball.radius = 4
-    ball.body = love.physics.newBody(world, 0, 300, 1, 0)
-    ball.shape = love.physics.newCircleShape(ball.body, 0, 0, ball.radius)
-    ball.shape:setRestitution(1)
-    ball.image = love.graphics.newImage("images/ball.png")
-    ball.imageXDiff = math.floor(ball.image:getWidth() / 2) - ball.radius
-    ball.imageYDiff = math.floor(ball.image:getHeight() / 2) - ball.radius
-
-
-    leftPaddle = Paddle:new(world, 20, "images/paddle.png",
+    ball = objects.Ball:new(world)
+    leftPaddle = objects.Paddle:new(world, 20, "images/paddle.png",
         { up = "w", down = "s" }, "left")
-    rightPaddle = Paddle:new(world, 770, "images/paddle.png",
+    rightPaddle = objects.Paddle:new(world, 770, "images/paddle.png",
         { up = "up", down = "down" }, "right")
 
     starter = "left"
@@ -97,9 +53,9 @@ local function move(playerPaddle)
     local isDown = love.keyboard.isDown
        
     if isDown(playerPaddle.keys.down) then
-        playerPaddle.body:applyForce(0, Paddle.constants.FORCE, 0, 0)
+        playerPaddle.body:applyForce(0, objects.Paddle.constants.FORCE, 0, 0)
     elseif isDown(playerPaddle.keys.up) then
-        playerPaddle.body:applyForce(0, -Paddle.constants.FORCE, 0, 0)
+        playerPaddle.body:applyForce(0, -objects.Paddle.constants.FORCE, 0, 0)
     end
 
     playerPaddle.body:setPosition(playerPaddle.x, playerPaddle.body:getY())
