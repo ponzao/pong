@@ -3,6 +3,7 @@ require("objects")
 local function reset(side)
     playing = false
     ball:stop()
+    -- TODO Encapsulate Player
     if side == "left" then
         ball:attachToLeftPaddle(leftPaddle)
     else
