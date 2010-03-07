@@ -3,11 +3,10 @@ require("objects")
 local function reset(side)
     playing = false
     ball:stop()
-    -- TODO Encapsulate Player
     if side == "left" then
-        ball:attachToLeftPaddle(leftPaddle)
+        ball:attachToLeftPaddle(leftPlayer.paddle)
     else
-        ball:attachToRightPaddle(rightPaddle)
+        ball:attachToRightPaddle(rightPlayer.paddle)
     end
     starter = side
 end
@@ -30,17 +29,15 @@ function love.load()
     world = love.physics.newWorld(800, 600)
     world:setCallbacks(collision, nil, nil, nil)
 
+    leftPlayer = objects.Player:new(objects.Paddle:new(world, 20, "left"), objects.Keys:new("w", "s"))
+    rightPlayer = objects.Player:new(objects.Paddle:new(world, 770, "right"), objects.Keys:new("up", "down"))
+
     leftWall = objects.VerticalWall:new(world, -5, 300, "left")
     rightWall = objects.VerticalWall:new(world, 800, 300, "right")
     roof = objects.HorizontalWall:new(world, 400, 0)
     floor = objects.HorizontalWall:new(world, 400, 600)
 
     ball = objects.Ball:new(world)
-    -- TODO Encapsulate keys.
-    leftPaddle = objects.Paddle:new(world, 20, 
-        { up = "w", down = "s" }, "left")
-    rightPaddle = objects.Paddle:new(world, 770, 
-        { up = "up", down = "down" }, "right")
 
     starter = "left"
     math.randomseed(os.time())
@@ -51,12 +48,12 @@ function love.load()
     end
 end
 
-local function move(paddle)
+local function move(paddle, keys)
     local isDown = love.keyboard.isDown
        
-    if isDown(paddle.keys.down) then
+    if isDown(keys.down) then
         paddle:moveDown()
-    elseif isDown(paddle.keys.up) then
+    elseif isDown(keys.up) then
         paddle:moveUp()
     end
 
@@ -67,8 +64,8 @@ local function move(paddle)
 end
 
 function love.update(dt)
-    move(leftPaddle)
-    move(rightPaddle)
+    move(leftPlayer.paddle, leftPlayer.keys)
+    move(rightPlayer.paddle, rightPlayer.keys)
 
     world:update(dt)
 end
@@ -77,12 +74,12 @@ function love.draw()
     -- TODO Encapsulate these.
     love.graphics.draw(ball.image, ball.body:getX() - ball.imageXDiff, 
         ball.body:getY() - ball.imageYDiff)
-    love.graphics.draw(leftPaddle.image, leftPaddle.body:getX() 
-        - leftPaddle.imageXDiff, leftPaddle.body:getY()
-        - leftPaddle.imageYDiff)
-    love.graphics.draw(rightPaddle.image, rightPaddle.body:getX()
-        - rightPaddle.imageXDiff, rightPaddle.body:getY() 
-        - rightPaddle.imageYDiff)
+    love.graphics.draw(leftPlayer.paddle.image, leftPlayer.paddle.body:getX() 
+        - leftPlayer.paddle.imageXDiff, leftPlayer.paddle.body:getY()
+        - leftPlayer.paddle.imageYDiff)
+    love.graphics.draw(rightPlayer.paddle.image, rightPlayer.paddle.body:getX()
+        - rightPlayer.paddle.imageXDiff, rightPlayer.paddle.body:getY() 
+        - rightPlayer.paddle.imageYDiff)
     love.graphics.print(score.left .. " - " .. score.right, 400, 300)
 
     love.graphics.setColor(0, 0, 0)

@@ -4,6 +4,20 @@ local setmetatable = setmetatable
 
 module("objects")
 
+Player = {}
+Player.__index = Player
+
+function Player:new(paddle, keys)
+    return setmetatable({ paddle = paddle, keys = keys }, self)
+end
+
+Keys = {}
+Keys.__index = Keys
+
+function Keys:new(up, down)
+    return setmetatable({ up = up, down = down }, self)
+end
+
 Ball = {}
 Ball.__index = Ball
 
@@ -66,7 +80,7 @@ Paddle = {}
 Paddle.__index = Paddle
 Paddle.constants = { HEIGHT = 100, WIDTH = 10, FORCE = 250000, CENTER = 250 }
 
-function Paddle:new(world, x, keys, side)
+function Paddle:new(world, x, side)
     local body = love.physics.newBody(world, x, self.constants.CENTER,
         10000, 0)
     local shape = love.physics.newRectangleShape(body, 4, 49,
@@ -74,7 +88,7 @@ function Paddle:new(world, x, keys, side)
     local image = love.graphics.newImage("images/paddle.png")
     local imageXDiff = math.floor(image:getWidth() / 2) - 4
     local imageYDiff = math.floor(image:getHeight() / 2) - 49
-    return setmetatable({ keys = keys, side = side, body = body,
+    return setmetatable({ side = side, body = body,
         shape = shape, x = x, image = image, imageXDiff = imageXDiff,
         imageYDiff = imageYDiff }, self)
 end
