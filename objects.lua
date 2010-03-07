@@ -90,3 +90,18 @@ end
 function Paddle:holdPosition() -- XXX ?
     self.body:setPosition(self.x, self.body:getY())
 end
+
+Score = {}
+Score.__index = Score
+
+function Score:new()
+    return setmetatable({ left = 0, right = 0 }, self)
+end
+
+function Score:leftWins()
+    self.left = self.left + 1
+end
+
+function Score:rightWins()
+    self.right = self.right + 1
+end

@@ -13,10 +13,10 @@ end
 
 local function collision(a)
     if a == "left" then
-        score.right = score.right + 1
+        score:rightWins()
         reset("left")
     elseif a == "right" then
-        score.left = score.left + 1
+        score:leftWins()
         reset("right")
     end
 end
@@ -24,7 +24,7 @@ end
 function love.load()
     playing = false
     altPressed = false
-    score = { left = 0, right = 0 }
+    score = objects.Score:new()
 
     world = love.physics.newWorld(800, 600)
     world:setCallbacks(collision, nil, nil, nil)
