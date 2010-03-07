@@ -2,7 +2,7 @@ require("objects")
 
 local function reset(side)
     playing = false
-    ball.body:setLinearVelocity(0, 0)
+    ball:stop()
     if side == "left" then
         ball.body:setPosition(35, leftPaddle.body:getY() + 45)
     else
@@ -49,18 +49,18 @@ function love.load()
     end
 end
 
-local function move(playerPaddle)
+local function move(paddle)
     local isDown = love.keyboard.isDown
        
-    if isDown(playerPaddle.keys.down) then
-        playerPaddle:moveDown()
-    elseif isDown(playerPaddle.keys.up) then
-        playerPaddle:moveUp()
+    if isDown(paddle.keys.down) then
+        paddle:moveDown()
+    elseif isDown(paddle.keys.up) then
+        paddle:moveUp()
     end
 
-    playerPaddle:holdPosition() -- XXX ?
-    if playing == false and starter == playerPaddle.side then
-        ball.body:setY(playerPaddle.body:getY() + 45)
+    paddle:holdPosition() -- XXX ?
+    if playing == false and starter == paddle.side then
+        ball:followPaddle(paddle)
     end
 end
 

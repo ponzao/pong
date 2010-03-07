@@ -26,6 +26,14 @@ function Ball:moveLeft()
     self.body:applyImpulse(20, 0, 0, 0)
 end
 
+function Ball:followPaddle(paddle)
+    self.body:setY(paddle.body:getY() + 45)
+end
+
+function Ball:stop()
+    self.body:setLinearVelocity(0, 0)
+end
+
 VerticalWall = {}
 VerticalWall.__index = VerticalWall
 
