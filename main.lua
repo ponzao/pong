@@ -4,9 +4,9 @@ local function reset(side)
     playing = false
     ball:stop()
     if side == "left" then
-        ball.body:setPosition(35, leftPaddle.body:getY() + 45)
+        ball:attachToLeftPaddle(leftPaddle)
     else
-        ball.body:setPosition(755, rightPaddle.body:getY() + 45)
+        ball:attachToRightPaddle(rightPaddle)
     end
     starter = side
 end
@@ -35,6 +35,7 @@ function love.load()
     floor = objects.HorizontalWall:new(world, 400, 600)
 
     ball = objects.Ball:new(world)
+    -- TODO Encapsulate keys.
     leftPaddle = objects.Paddle:new(world, 20, 
         { up = "w", down = "s" }, "left")
     rightPaddle = objects.Paddle:new(world, 770, 
@@ -72,6 +73,7 @@ function love.update(dt)
 end
 
 function love.draw()
+    -- TODO Encapsulate these.
     love.graphics.draw(ball.image, ball.body:getX() - ball.imageXDiff, 
         ball.body:getY() - ball.imageYDiff)
     love.graphics.draw(leftPaddle.image, leftPaddle.body:getX() 

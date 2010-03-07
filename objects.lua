@@ -30,6 +30,14 @@ function Ball:followPaddle(paddle)
     self.body:setY(paddle.body:getY() + 45)
 end
 
+function Ball:attachToLeftPaddle(paddle)
+    self.body:setPosition(35, paddle.body:getY() + 45)
+end
+
+function Ball:attachToRightPaddle(paddle)
+    self.body:setPosition(755, paddle.body:getY() + 45)
+end
+
 function Ball:stop()
     self.body:setLinearVelocity(0, 0)
 end
