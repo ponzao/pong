@@ -35,9 +35,9 @@ function love.load()
     floor = objects.HorizontalWall:new(world, 400, 600)
 
     ball = objects.Ball:new(world)
-    leftPaddle = objects.Paddle:new(world, 20, "images/paddle.png",
+    leftPaddle = objects.Paddle:new(world, 20, 
         { up = "w", down = "s" }, "left")
-    rightPaddle = objects.Paddle:new(world, 770, "images/paddle.png",
+    rightPaddle = objects.Paddle:new(world, 770, 
         { up = "up", down = "down" }, "right")
 
     starter = "left"

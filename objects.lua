@@ -58,12 +58,12 @@ Paddle = {}
 Paddle.__index = Paddle
 Paddle.constants = { HEIGHT = 100, WIDTH = 10, FORCE = 250000, CENTER = 250 }
 
-function Paddle:new(world, x, imagePath, keys, side)
+function Paddle:new(world, x, keys, side)
     local body = love.physics.newBody(world, x, self.constants.CENTER,
         10000, 0)
     local shape = love.physics.newRectangleShape(body, 4, 49,
         self.constants.WIDTH, self.constants.HEIGHT)
-    local image = love.graphics.newImage(imagePath)
+    local image = love.graphics.newImage("images/paddle.png")
     local imageXDiff = math.floor(image:getWidth() / 2) - 4
     local imageYDiff = math.floor(image:getHeight() / 2) - 49
     return setmetatable({ keys = keys, side = side, body = body,
