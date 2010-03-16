@@ -48,25 +48,18 @@ function love.load()
     end
 end
 
-local function move(paddle, keys)
-    local isDown = love.keyboard.isDown
-       
-    if isDown(keys.down) then
-        paddle:moveDown()
-    elseif isDown(keys.up) then
-        paddle:moveUp()
-    end
+local function move(player)
+    player:updatePosition()
 
-    paddle:holdPosition() -- XXX ?
-    if playing == false and starter == paddle.side then
-        ball:followPaddle(paddle)
+    -- TODO this doesn't really make sense
+    if playing == false and starter == player.paddle.side then
+        ball:followPaddle(player.paddle)
     end
 end
 
 function love.update(dt)
-    -- TODO Create Paddle/Player:update(keypress)
-    move(leftPlayer.paddle, leftPlayer.keys)
-    move(rightPlayer.paddle, rightPlayer.keys)
+    move(leftPlayer)
+    move(rightPlayer)
 
     world:update(dt)
 end

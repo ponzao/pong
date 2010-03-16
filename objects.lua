@@ -11,6 +11,18 @@ function Player:new(paddle, keys)
     return setmetatable({ paddle = paddle, keys = keys }, self)
 end
 
+function Player:updatePosition()
+    local isDown = love.keyboard.isDown
+
+    if isDown(self.keys.down) then
+        self.paddle:moveDown()
+    elseif isDown(self.keys.up) then
+        self.paddle:moveUp()
+    end
+
+    self.paddle:holdPosition()
+end
+
 Keys = {}
 Keys.__index = Keys
 
@@ -101,7 +113,7 @@ function Paddle:moveUp()
     self.body:applyForce(0, -Paddle.constants.FORCE, 0, 0)
 end
 
-function Paddle:holdPosition() -- XXX ?
+function Paddle:holdPosition()
     self.body:setPosition(self.x, self.body:getY())
 end
 
