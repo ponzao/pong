@@ -64,6 +64,7 @@ local function move(paddle, keys)
 end
 
 function love.update(dt)
+    -- TODO Create Paddle/Player:update(keypress)
     move(leftPlayer.paddle, leftPlayer.keys)
     move(rightPlayer.paddle, rightPlayer.keys)
 
