@@ -14,10 +14,10 @@ end
 local function collision(a)
     if a == "left" then
         score:rightWins()
-        reset("left")
+        --reset("left")
     elseif a == "right" then
         score:leftWins()
-        reset("right")
+        --reset("right")
     end
 end
 
@@ -38,6 +38,9 @@ function love.load()
     floor = objects.HorizontalWall:new(world, 400, 600)
 
     ball = objects.Ball:new(world)
+    ball2 = objects.Ball:new(world)
+    ball3 = objects.Ball:new(world)
+    ball4 = objects.Ball:new(world)
 
     starter = "left"
     math.randomseed(os.time())
@@ -54,6 +57,9 @@ local function move(player)
     -- TODO this doesn't really make sense
     if playing == false and starter == player.paddle.side then
         ball:followPaddle(player.paddle)
+        ball2:followPaddle(player.paddle)
+        ball3:followPaddle(player.paddle)
+        ball4:followPaddle(player.paddle)
     end
 end
 
@@ -68,6 +74,12 @@ function love.draw()
     -- TODO Encapsulate these.
     love.graphics.draw(ball.image, ball.body:getX() - ball.imageXDiff, 
         ball.body:getY() - ball.imageYDiff)
+    love.graphics.draw(ball2.image, ball2.body:getX() - ball2.imageXDiff, 
+        ball2.body:getY() - ball2.imageYDiff)
+    love.graphics.draw(ball3.image, ball3.body:getX() - ball3.imageXDiff, 
+        ball3.body:getY() - ball3.imageYDiff)
+    love.graphics.draw(ball4.image, ball4.body:getX() - ball4.imageXDiff, 
+        ball4.body:getY() - ball4.imageYDiff)
     love.graphics.draw(leftPlayer.paddle.image, leftPlayer.paddle.body:getX() 
         - leftPlayer.paddle.imageXDiff, leftPlayer.paddle.body:getY()
         - leftPlayer.paddle.imageYDiff)
@@ -90,8 +102,14 @@ function love.keypressed(k)
         playing = true
         if starter == "left" then
             ball:moveRight()
+            ball2:moveRight()
+            ball3:moveRight()
+            ball4:moveRight()
         else
             ball:moveLeft()
+            ball2:moveLeft()
+            ball3:moveLeft()
+            ball4:moveLeft()
         end
     end
     
