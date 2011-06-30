@@ -26,7 +26,7 @@ function love.load()
     altPressed = false
     score = objects.Score:new()
 
-    world = love.physics.newWorld(800, 600)
+    world = love.physics.newWorld(-1000, -1000, 1000, 1000)
     world:setCallbacks(collision, nil, nil, nil)
 
     leftPlayer = objects.Player:new(objects.Paddle:new(world, 20, "left"), objects.Keys:new("w", "s"))
@@ -66,23 +66,21 @@ end
 
 function love.draw()
     -- TODO Encapsulate these.
-    love.graphics.draw(ball.image, ball.body:getX() - ball.imageXDiff, 
-        ball.body:getY() - ball.imageYDiff)
-    love.graphics.draw(leftPlayer.paddle.image, leftPlayer.paddle.body:getX() 
-        - leftPlayer.paddle.imageXDiff, leftPlayer.paddle.body:getY()
-        - leftPlayer.paddle.imageYDiff)
-    love.graphics.draw(rightPlayer.paddle.image, rightPlayer.paddle.body:getX()
-        - rightPlayer.paddle.imageXDiff, rightPlayer.paddle.body:getY() 
-        - rightPlayer.paddle.imageYDiff)
+    love.graphics.circle('fill',
+                         ball.body:getX(), 
+                         ball.body:getY(),
+                         10)
+    love.graphics.rectangle('fill',
+                           leftPlayer.paddle.body:getX(), 
+                           leftPlayer.paddle.body:getY(),
+                           leftPlayer.paddle.constants.WIDTH,
+                           leftPlayer.paddle.constants.HEIGHT)
+    love.graphics.rectangle('fill',
+                            rightPlayer.paddle.body:getX(),
+                            rightPlayer.paddle.body:getY(),
+                            rightPlayer.paddle.constants.WIDTH,
+                            rightPlayer.paddle.constants.HEIGHT)
     love.graphics.print(score.left .. " - " .. score.right, 400, 300)
-
-    love.graphics.setColor(0, 0, 0)
-    for i = 600, 0, -1 do 
-        if math.random(0, 1) == 1 then
-            love.graphics.rectangle("fill", 0, i, 800, 1)
-        end
-    end
-    love.graphics.setColor(255, 255, 255, 255)
 end
 
 function love.keypressed(k)
