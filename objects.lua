@@ -57,11 +57,11 @@ function Ball:followPaddle(paddle)
 end
 
 function Ball:attachToLeftPaddle(paddle)
-    self.body:setPosition(35, paddle.body:getY() + 45)
+    self.body:setPosition(40, paddle.body:getY() + 45)
 end
 
 function Ball:attachToRightPaddle(paddle)
-    self.body:setPosition(755, paddle.body:getY() + 45)
+    self.body:setPosition(760, paddle.body:getY() + 45)
 end
 
 function Ball:stop()
