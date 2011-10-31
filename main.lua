@@ -67,11 +67,11 @@ end
 function love.draw()
     -- TODO Encapsulate these.
     love.graphics.circle('fill',
-                         ball.body:getX(), 
+                         ball.body:getX(),
                          ball.body:getY(),
                          10)
     love.graphics.rectangle('fill',
-                           leftPlayer.paddle.body:getX(), 
+                           leftPlayer.paddle.body:getX(),
                            leftPlayer.paddle.body:getY(),
                            leftPlayer.paddle.constants.WIDTH,
                            leftPlayer.paddle.constants.HEIGHT)
@@ -92,7 +92,7 @@ function love.keypressed(k)
             ball:moveLeft()
         end
     end
-    
+
     if k == "lalt" then
         altPressed = true
     end
